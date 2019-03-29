@@ -8,8 +8,9 @@ public class CasaManager extends Thread {
     private Casa listaCase[];
     private Random rand = new Random();
     private int timpMediuAsteptare=0,timpMediuServire=0;
+    public View view;
 
-    public CasaManager(Casa[] listaCase1, int minTimpSosire, int maxTimpSosire, int minTimpServire, int maxTimpServire, int nrCase, int timpSimulare) {
+    public CasaManager(Casa[] listaCase1, int minTimpSosire, int maxTimpSosire, int minTimpServire, int maxTimpServire, int nrCase, int timpSimulare,View view) {
 
         this.minTimpSosire = minTimpSosire;
         this.maxTimpSosire = maxTimpSosire;
@@ -18,6 +19,7 @@ public class CasaManager extends Thread {
         this.nrCase = nrCase;
         this.timpSimulare = timpSimulare;
         this.listaCase = listaCase1;
+        this.view=view;
 
         int i;
         for (i = 0; i < nrCase; i++) {
@@ -29,7 +31,6 @@ public class CasaManager extends Thread {
                     rand.nextInt(maxTimpServire - minTimpServire) + 1));
             //  System.out.println(clienti.get(i));
         }
-
     }
 
 
@@ -54,8 +55,9 @@ public class CasaManager extends Thread {
 
     public void run() {
 
-        for (Casa c : listaCase)
+        for (Casa c : listaCase) {
             c.start();
+        }
 
         try {
             System.out.println(listaCase.length);
@@ -67,6 +69,8 @@ public class CasaManager extends Thread {
                         timpMediuServire+=client.getTimpServire();
                 }
                 System.out.println("RealTIME:" + realTime);
+                view.setTimpMaxServireField(realTime);
+
                 sleep(1000);
             }
         } catch (InterruptedException e) {
